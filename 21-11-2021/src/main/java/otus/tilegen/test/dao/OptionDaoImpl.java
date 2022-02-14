@@ -1,7 +1,10 @@
 package otus.tilegen.test.dao;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 import otus.tilegen.test.domain.Option;
 
 import java.io.*;
@@ -10,23 +13,25 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+@Component
+@PropertySource("classpath:config.properties")
 public class OptionDaoImpl implements OptionDao {
 
-    private List<Option> options;
+    private String optionsCsvFileName;
 
 
-    public OptionDaoImpl(String optionsCsvFileName) {
-        init(optionsCsvFileName);
+    public OptionDaoImpl(@Value("${option.file.name}") String optionsCsvFileName) {
+        this.optionsCsvFileName = optionsCsvFileName;
     }
 
     @Override
     public List<Option> getTestOptions(int questionId) {
-        return options.stream().filter(o -> o.getIdQuestion() == questionId).collect(Collectors.toList());
+        return getOptions().stream().filter(o -> o.getIdQuestion() == questionId).collect(Collectors.toList());
     }
 
-    private void init(String optionsCsvFileName) {
+    private List<Option> getOptions() {
         Resource resource = new ClassPathResource(optionsCsvFileName);
-        options = new ArrayList<>();
+        List<Option> options = new ArrayList<>();
         try (Scanner scanner = new Scanner(resource.getFile())) {
             if(scanner.hasNext()) {
                 scanner.nextLine();
@@ -37,7 +42,7 @@ public class OptionDaoImpl implements OptionDao {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return options;
     }
 
     private Option getOptionFromLine(String line) throws IOException {
@@ -49,7 +54,7 @@ public class OptionDaoImpl implements OptionDao {
             option.setRightAnswer(Integer.parseInt(values[2]) == 1);
         }
         else {
-            throw new IOException("options куфвшта failed");
+            throw new IOException("options reading failed");
         }
         return option;
     }

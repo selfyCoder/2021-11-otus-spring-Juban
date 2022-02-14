@@ -1,5 +1,7 @@
 package otus.tilegen.test.domain;
 
+import java.util.Objects;
+
 public class Option {
 
     private String optionText;
@@ -28,5 +30,18 @@ public class Option {
 
     public void setRightAnswer(boolean rightAnswer) {
         this.rightAnswer = rightAnswer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Option option = (Option) o;
+        return idQuestion == option.idQuestion && rightAnswer == option.rightAnswer && Objects.equals(optionText, option.optionText);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(optionText, idQuestion, rightAnswer);
     }
 }

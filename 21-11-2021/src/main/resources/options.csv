@@ -8,3 +8,12 @@ false;2;1
 yes;2;0
 no;2;0
 maybe;2;0
+Association;3;0
+Aggregation;3;0
+Encapsulation;3;1
+Association;4;0
+Aggregation;4;1
+Encapsulation;4;0
+Association;5;1
+Aggregation;5;0
+Encapsulation;5;0

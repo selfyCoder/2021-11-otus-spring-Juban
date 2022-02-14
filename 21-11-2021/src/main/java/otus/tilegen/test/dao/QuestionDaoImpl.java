@@ -1,7 +1,11 @@
 package otus.tilegen.test.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 import otus.tilegen.test.domain.Question;
 
 import java.io.IOException;
@@ -9,22 +13,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+@Component
+@PropertySource("classpath:config.properties")
 public class QuestionDaoImpl implements QuestionDao{
-    private List<Question> questions;
     private OptionDao optionDao;
+    private String questionFileName;
+
+    public QuestionDaoImpl(@Value("${question.file.name}") String questionFileName, @Autowired OptionDao optionDao) {
+        this.optionDao = optionDao;
+        this.questionFileName = questionFileName;
+    }
+
     @Override
     public List<Question> getQuestionsFromCsv() {
-        return questions;
-    }
-
-    public QuestionDaoImpl(String questionFileName, OptionDao optionDao) {
-           this.optionDao = optionDao;
-           init(questionFileName);
-    }
-
-    private void init(String questionFileName) {
         Resource resource = new ClassPathResource(questionFileName);
-        questions = new ArrayList<>();
+        List<Question> questions = new ArrayList<>();
         try (Scanner scanner = new Scanner(resource.getFile())) {
             if(scanner.hasNext()) {
                 scanner.nextLine();
@@ -35,7 +38,7 @@ public class QuestionDaoImpl implements QuestionDao{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return questions;
     }
 
     private Question getQuestionFromLine(String line) throws IOException {

@@ -1,3 +1,6 @@
 questionText;id
-Сколько байт в типе int;1
-какие значение принимает тип boolean;2
+Number of bytes in int type;1
+what value does boolean type has;2
+_____ simply means binding object state(fields) and behaviour(methods) together;3
+_____  is a special form of association. It is a relationship between two classes like association, however its a directional association;4
+_____ establishes relationship between two separate classes through their objects. The relationship can be one to one, One to many, many to one and many to many;5
