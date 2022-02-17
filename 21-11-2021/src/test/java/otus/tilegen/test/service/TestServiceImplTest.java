@@ -1,26 +1,30 @@
 package otus.tilegen.test.service;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import otus.tilegen.test.dao.QuestionDao;
+import org.mockito.MockitoAnnotations;
+import otus.tilegen.test.dao.QuestionDaoImpl;
 import otus.tilegen.test.domain.Question;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RunWith(MockitoJUnitRunner.class)
 public class TestServiceImplTest {
 
     @Mock
-    private QuestionDao questionDao;
+    private QuestionDaoImpl questionDao;
 
     @InjectMocks
     private TestServiceImpl testService;
+
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     public void whenGetQuestions() {
